@@ -12,7 +12,7 @@ stages {
 
       // Get some code from a GitHub repository
 
-      git 'https://github.com/raknas999/GOL-Repo.git'
+      checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/varma555/GOL-Repo.git']]])
 
       // Get the Maven tool.
      
@@ -62,8 +62,8 @@ stages {
     stage('Build and Push Docker Image') {
       steps {
         sh label: '', script: '''docker build -t gameoflife-image:$BUILD_NUMBER .
-                                 docker tag gameoflife-image:$BUILD_NUMBER docker.io/raknas000/gameoflife-image:$BUILD_NUMBER
-                                 docker push docker.io/raknas000/gameoflife-image:$BUILD_NUMBER'''
+                                 docker tag gameoflife-image:$BUILD_NUMBER docker.io/santosh123456/gameoflife-image:$BUILD_NUMBER
+                                 docker push docker.io/santosh123456/gameoflife-image:$BUILD_NUMBER'''
       }
  }
   stage('Update Image Version') {
@@ -74,9 +74,9 @@ stages {
  }
   stage('Apply Kubernetes files') {
             steps {
-             sh label: '', script: '''scp *.yml jenkins@15.206.172.243:/home/jenkins
-                                  ssh jenkins@15.206.172.243 kubectl apply -f deploy-kube.yml
-                                  ssh jenkins@15.206.172.243 kubectl apply -f service.yml'''
+             sh label: '', script: '''scp *.yml jenkins@52.66.149.233:/home/jenkins
+                                  ssh jenkins@52.66.149.233 kubectl apply -f deploy-kube.yml
+                                  ssh jenkins@52.66.149.233 kubectl apply -f service.yml'''
            
         }
      }
